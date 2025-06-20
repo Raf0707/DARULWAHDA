@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- базовые сведения о приложении (оставлены без изменений) -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -20,11 +21,15 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
+	<!-- поддержка сцен -->
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
 	</dict>
+
+	<!-- требуемые архитектуры / ориентации -->
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -42,7 +47,38 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+	<!-- LaunchScreen storyboard (оставлен пустым, если не используете) -->
 	<key>UILaunchScreen</key>
 	<dict/>
+
+	<!-- ---------- ATS-правило (добавлено) ---------- -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- Глобально запретить небезопасные подключения -->
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+
+		<!-- Разрешить TLS-трафик только к darulwahda.ru и поддоменам -->
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>darulwahda.ru</key>
+			<dict>
+				<!-- Только HTTPS; HTTP запрещён -->
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<false/>
+				<!-- Требовать современный TLS -->
+				<key>NSTemporaryExceptionMinimumTLSVersion</key>
+				<string>TLSv1.2</string>
+				<!-- Разрешить поддомены (если используете cdn.darulwahda.ru и т.д.) -->
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<!-- Требовать Perfect Forward Secrecy -->
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+	<!-- ---------- /ATS ---------- -->
 </dict>
 </plist>

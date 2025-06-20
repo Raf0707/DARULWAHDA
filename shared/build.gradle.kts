@@ -31,6 +31,7 @@ kotlin {
     sourceSets {
         val composeV = "1.6.10"
 
+        /* -------- commonMain ▸ уже есть ---------- */
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.compose.runtime:runtime:$composeV")
@@ -46,11 +47,33 @@ kotlin {
             }
         }
 
-        //val iosMain by getting      // если понадобится — свои зависимости
+        /* -------- iOS  -------- */
+        val iosX64Main            by getting
+        val iosArm64Main          by getting
+        val iosSimulatorArm64Main by getting
+
+        val iosMain by creating {
+            dependsOn(commonMain)
+
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                /** главное: UI-UIKit! */
+                implementation("org.jetbrains.compose.ui:ui-uikit:$composeV")
+
+                /** Coroutines для Darwin-бинарей */
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-nativeDarwin")
+            }
+        }
+
+        /* -------- tests -------- */
         val commonTest by getting {
             dependencies { implementation(libs.kotlin.test) }
         }
     }
+
 }
 
 android {
