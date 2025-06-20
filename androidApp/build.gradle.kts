@@ -36,6 +36,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation(projects.shared)
     implementation(libs.compose.ui)
